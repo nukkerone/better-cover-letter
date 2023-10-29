@@ -34,7 +34,7 @@ export async function generate(prevState: any, formData: FormData): Promise<Gene
 
   const completions = await openai.completions.create({
     max_tokens: 350,
-    model: "text-davinci-003",
+    model: "gpt-3.5-turbo-instruct",
     prompt: `
         You are a professional HR manager, your job is, based on a job description and a freelancer profile, to create the best possible cover letter for him. 
         You will do this by analyzing the job description matching it with the freelancer profile and then generating a cover letter. 
