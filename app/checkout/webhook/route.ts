@@ -1,11 +1,10 @@
 import { db } from '../../../lib/drizzle'
 import { paddle as paddleSchema } from '../../../lib/schema'
+import { eq } from 'drizzle-orm'
 
 export async function POST(request: Request) {
-  //console.log('Webhook received')
   try {
     const event = await request.json()
-    //console.log('Body ', event)
 
     switch (event.event_type) {
       case 'subscription.created':
@@ -28,8 +27,7 @@ export async function POST(request: Request) {
 
 async function onSubscriptionCreated(event: any) {
   // Create a new subscription record in our database
-  console.log('Subscription created ', event)
-  if (!event.data.custom_data.userId) { throw new Error('No userId coming in subscription ' + event.data.id) }
+  if (!event.data.custom_data.userId) { throw new Error('No userId coming in subscription.created ' + event.data.id) }
   const userId = event.data.custom_data.userId
   let paddle = await db.query.paddle.findFirst({ where: (paddle, { eq }) => eq(paddle.userId, userId) })
   if (paddle) {
@@ -54,7 +52,25 @@ async function onSubscriptionCreated(event: any) {
 
 async function onSubscriptionUpdated(event: any) {
   // Take care of cases where subscription is canceled, paused, etc.
-  //console.log('Subscription updated ', event)
+  if (!event.data.custom_data.userId) { throw new Error('No userId coming in subscription.created ' + event.data.id) }
+  const userId = event.data.custom_data.userId
+  let paddle = await db.query.paddle.findFirst({ where: (paddle, { eq }) => eq(paddle.userId, userId) })
+  if (!paddle) {
+    // This should never happen
+    throw new Error('Paddle record not found for the user ' + userId)
+  }
+  const nextBilledAt = new Date(event.data.next_billed_at)
+  
+  try {
+    await db.update(paddleSchema).set({
+      status: event.data.status,
+      next_billed_at: nextBilledAt
+    }).where(eq(paddleSchema.userId, userId))
+  } catch (error) {
+    throw new Error('Error updating paddle record ' + error)
+  }
+
+  return true;
 }
 
 async function onTransactionCompleted(event: any) {
