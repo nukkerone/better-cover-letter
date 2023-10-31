@@ -1,3 +1,4 @@
+import { db } from '../../../lib/drizzle'
 
 export async function POST(request: Request) {
 
@@ -8,8 +9,10 @@ export async function POST(request: Request) {
     switch (body.event_type) {
       case 'subscription.created':
         return onSubscriptionCreated()
-      case 'subscription.created':
-        return onSubscriptionCreated()
+      case 'subscription.updated':
+        return onSubscriptionUpdated()
+      case 'tranasction.completed':
+        return onTransactionCompleted()
     }
   } catch (e) {
 
@@ -25,4 +28,8 @@ function onSubscriptionCreated() {
 
 function onSubscriptionUpdated() {
   // Take care of cases where subscription is canceled, paused, etc.
+}
+
+function onTransactionCompleted() {
+  // Update user's credits for the current billing cycle
 }

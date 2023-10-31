@@ -1,26 +1,21 @@
-'use client'
+import Generate from "@/components/generate"
+import { authOptions } from "@/lib/auth"
+import { db } from '@/lib/drizzle'
+import { getServerSession } from "next-auth"
+import { redirect } from "next/navigation"
 
-import GenerationForm from "@/components/generate/form"
-import Response from "@/components/generate/response"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { useState } from "react"
+export default async function Home() {
+  const session = await getServerSession(authOptions)
+  const paddle = await db.query.paddle.findFirst({ where: (paddle, { eq }) => eq(paddle.userId, session!.user.id) })
+  const activePayment = paddle?.status === 'active'
 
-export default function Home() {
-  const [generatedCoverLetter, setGeneratedCoverLetter] = useState<string>('')
-  const [error, setError] = useState<string>('')
+  if (!activePayment) {
+    redirect('/checkout')
+  }
 
   return (
     <main className="flex min-h-screen flex-row items-stretch justify-between p-24 max-w-[1280px] gap-[24px]">
-      <Card className="flex-1">
-        <CardHeader>
-          <CardTitle>Generate Your Smart Cover Letter</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <GenerationForm onGeneration={setGeneratedCoverLetter} onError={setError} />
-        </CardContent>
-      </Card>
-
-      <Response className="flex-1" response={generatedCoverLetter ?? error} />
+      <Generate />
     </main>
   )
 }

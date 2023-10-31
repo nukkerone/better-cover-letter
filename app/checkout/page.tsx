@@ -1,33 +1,21 @@
-'use client'
+import Checkout from "@/components/checkout"
+import { authOptions } from "@/lib/auth"
+import { db } from '@/lib/drizzle'
+import { getServerSession } from "next-auth"
+import { redirect } from 'next/navigation'
 
-import { initializePaddle, Paddle } from '@paddle/paddle-js';
-import { useEffect, useState } from "react";
+const CheckoutPage = async () => {
+  const session = await getServerSession(authOptions)
+  const paddle = await db.query.paddle.findFirst({ where: (paddle, { eq }) => eq(paddle.userId, session!.user.id) })
+  const activePayment = paddle?.status === 'active'
+  
+  if (activePayment) {
+    redirect('/')
+  }
 
-const CheckoutPage = () => {
-  const [paddle, setPaddle] = useState<Paddle>();
-
-  useEffect(() => {
-    initializePaddle({
-      environment: process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT! as 'sandbox' | 'production',
-      seller: parseInt(process.env.NEXT_PUBLIC_PADDLE_SELLER!) 
-    }).then(
-      (paddleInstance: Paddle | undefined) => {
-        if (paddleInstance) {
-          setPaddle(paddleInstance);
-        }
-      },
-    );
-  }, []);
-
-  useEffect(() => {
-    if (paddle) {
-      paddle.Checkout.open({
-        items: [{ priceId: process.env.NEXT_PUBLIC_PADDLE_PRODUCT_PRICE_ID! }],
-      });
-    }
-  }, [paddle])
-
-  return <></>
+  return <>
+    {session && !activePayment && <Checkout userId={session.user.id} />}
+  </>
 }
 
 export default CheckoutPage
