@@ -1,4 +1,5 @@
 import Generate from "@/components/generate"
+import Nav from "@/components/nav"
 import { authOptions } from "@/lib/auth"
 import { db } from '@/lib/drizzle'
 import { getServerSession } from "next-auth"
@@ -14,8 +15,12 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-row items-stretch justify-between p-24 max-w-[1280px] gap-[24px]">
-      <Generate />
-    </main>
+    <div className="flex flex-col p-24 pt-0 max-w-[1280px] min-h-screen">
+      <Nav />
+
+      <main className="flex flex-row flex-1 items-stretch justify-between gap-[24px]">
+        <Generate />
+      </main>
+    </div>
   )
 }

@@ -65,7 +65,7 @@ export const paddle = pgTable(
   {
     userId: text("userId")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => users.id, { onDelete: "cascade" }).primaryKey(),
     customer_id: text("customer_id").notNull(),
     status: paddleStatusEnum("paddleStatus").notNull(),
     next_billed_at: timestamp("next_billed_at", { mode: "date" }).notNull(),

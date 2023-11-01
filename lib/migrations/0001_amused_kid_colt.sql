@@ -1,0 +1,1 @@
+ALTER TABLE "paddle" ADD PRIMARY KEY ("userId");

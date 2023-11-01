@@ -54,7 +54,7 @@ const GenerationForm = ({ onGeneration, onError } : Props) => {
             <FormItem>
               <FormLabel>Freelancer Profile</FormLabel>
               <FormControl>
-                <Textarea placeholder="shadcn" {...field} />
+                <Textarea placeholder="" {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name.
@@ -71,7 +71,7 @@ const GenerationForm = ({ onGeneration, onError } : Props) => {
             <FormItem>
               <FormLabel>Job Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="shadcn" {...field} />
+                <Textarea placeholder="" {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name.
