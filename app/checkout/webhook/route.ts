@@ -1,8 +1,30 @@
+import { NextRequest } from "next/server";
 import { db } from '../../../lib/drizzle'
 import { paddle as paddleSchema } from '../../../lib/schema'
 import { eq } from 'drizzle-orm'
+import { parseWebhookBody } from "@/lib/webhooks";
+
+const secret = process.env.PADDLE_WEBHOOK_SECRET!;
 
 export async function POST(request: Request) {
+  const data = await request.text();
+  const signature = request.headers.get('Paddle-Signature') as string;
+
+  console.log('signature', signature)
+  console.log('data', 'data')
+
+  const webhook = parseWebhookBody(
+    null,
+    secret,
+    signature,
+    data
+  );
+
+  // If the webhook is invalid, it will be null
+  if (!webhook) {
+    throw new Error('Invalid webhook signature')
+  }
+
   try {
     const event = await request.json()
 
@@ -22,7 +44,7 @@ export async function POST(request: Request) {
   }
 
   return Response.json({ success: true })
-  
+
 }
 
 async function onSubscriptionCreated(event: any) {
@@ -35,7 +57,7 @@ async function onSubscriptionCreated(event: any) {
     throw new Error('The user already has a paddle record ' + userId)
   }
   const nextBilledAt = new Date(event.data.next_billed_at)
-  
+
   try {
     await db.insert(paddleSchema).values({
       userId,
@@ -60,7 +82,7 @@ async function onSubscriptionUpdated(event: any) {
     throw new Error('Paddle record not found for the user ' + userId)
   }
   const nextBilledAt = new Date(event.data.next_billed_at)
-  
+
   try {
     await db.update(paddleSchema).set({
       status: event.data.status,
