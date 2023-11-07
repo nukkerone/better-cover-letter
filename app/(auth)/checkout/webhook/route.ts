@@ -10,9 +10,6 @@ export async function POST(request: Request) {
   const data = await request.text();
   const signature = request.headers.get('Paddle-Signature') as string;
 
-  console.log('signature', signature)
-  console.log('data', 'data')
-
   const webhook = parseWebhookBody(
     null,
     secret,
