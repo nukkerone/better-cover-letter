@@ -10,7 +10,7 @@ const CheckoutPage = async () => {
   const activePayment = paddle?.status === 'active'
   
   if (activePayment) {
-    redirect('/')
+    redirect('/generate')
   }
 
   return <>

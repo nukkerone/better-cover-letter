@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
-import { db } from '../../../lib/drizzle'
-import { paddle as paddleSchema } from '../../../lib/schema'
+import { db } from '@/lib/drizzle'
+import { paddle as paddleSchema } from '@/lib/schema'
 import { eq } from 'drizzle-orm'
 import { parseWebhookBody } from "@/lib/webhooks";
 
@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   const data = await request.text();
   const signature = request.headers.get('Paddle-Signature') as string;
 
-  const webhook = parseWebhookBody(
+  const event = parseWebhookBody(
     null,
     secret,
     signature,
@@ -18,13 +18,11 @@ export async function POST(request: Request) {
   );
 
   // If the webhook is invalid, it will be null
-  if (!webhook) {
+  if (!event) {
     throw new Error('Invalid webhook signature')
   }
 
   try {
-    const event = await request.json()
-
     switch (event.event_type) {
       case 'subscription.created':
         onSubscriptionCreated(event)
@@ -37,7 +35,7 @@ export async function POST(request: Request) {
         break
     }
   } catch (e) {
-    return Response.json({ fail: true })
+    throw new Error('Error parsing webhook body ' + e)
   }
 
   return Response.json({ success: true })
@@ -53,8 +51,8 @@ async function onSubscriptionCreated(event: any) {
     // This should never happen
     throw new Error('The user already has a paddle record ' + userId)
   }
-  const nextBilledAt = new Date(event.data.next_billed_at)
 
+  const nextBilledAt = new Date(event.data.next_billed_at)
   try {
     await db.insert(paddleSchema).values({
       userId,
