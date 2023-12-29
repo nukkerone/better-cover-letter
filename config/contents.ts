@@ -28,7 +28,7 @@ export const featureCards: ContentSection = {
 export const features: ContentSection = {
   header: `How it works`,
   subheader: `Why use Next Landing?`,
-  image: `/features-img.webp`,
+  // image: `/features-img.webp`,
   content: [
     {
       text: `Bring your own Cover Letter or Resume`,

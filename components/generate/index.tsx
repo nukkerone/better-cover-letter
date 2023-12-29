@@ -11,11 +11,11 @@ export default function Generate() {
 
   return (
     <>
-      <Card className="flex-1">
+      <Card className="flex flex-1 flex-col">
         <CardHeader>
           <CardTitle>Generate Your Smart Cover Letter</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-1 flex-col">
           <GenerationForm onGeneration={setGeneratedCoverLetter} onError={setError} />
         </CardContent>
       </Card>

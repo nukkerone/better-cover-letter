@@ -41,14 +41,14 @@ export default function Features() {
             </div>
           ))}
         </div>
-        <div
+        {features.image && <div
           className="md:border"
           style={{
             backgroundImage: `url(${features.image})`,
             backgroundRepeat: `no-repeat`,
             backgroundSize: `cover`,
           }}
-        ></div>
+        ></div>}
       </div>
     </section>
   )

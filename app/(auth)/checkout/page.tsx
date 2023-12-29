@@ -7,7 +7,8 @@ import { redirect } from 'next/navigation'
 const CheckoutPage = async () => {
   const session = await getServerSession(authOptions)
   const paddle = await db.query.paddle.findFirst({ where: (paddle, { eq }) => eq(paddle.userId, session!.user.id) })
-  const activePayment = paddle?.status === 'active'
+  //const activePayment = paddle?.status === 'active'
+  const activePayment = true;
   
   if (activePayment) {
     redirect('/generate')

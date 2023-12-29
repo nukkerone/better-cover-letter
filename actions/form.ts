@@ -1,5 +1,6 @@
 'use server'
 
+import { betterCoverLetter, skillConjunction } from "@/model";
 import OpenAI from "openai";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error"
@@ -33,28 +34,31 @@ export async function generate(prevState: any, formData: FormData): Promise<Gene
   });
 
   const completions = await openai.completions.create({
-    max_tokens: 350,
+    max_tokens: 200,
     model: "gpt-3.5-turbo-instruct",
+    temperature: 0,
     prompt: `
-        You are a professional HR manager, your job is, based on a job description and a freelancer profile, to create the best possible cover letter for him. 
-        You will do this by analyzing the job description matching it with the freelancer profile and then generating a cover letter. 
-        If the freelancer profile does not meet all the requirements, you should avoid mentioning, and instead focus on the skills that the freelancer has that are relevant to the job description.
-        Following is a job description and a freelancer profile.
+        List skills present in the following profile
+        <YourFreelancerProfile>
+          ${freelancerProfile}
+        </YourFreelancerProfile>
+        And also list skills present in the following job description
         <JobDescription>
           ${jobDescription}
         </JobDescription>
-        <freelancerProfile>
-          ${freelancerProfile}
-        </freelancerProfile>
-        Please, format your output using html, for example making use of the paragraph tags.
       `
   });
 
   const {choices} = completions;
 
+  const skills = await skillConjunction(choices[0].text)
+
+
+  const generatedCoverLetter = await betterCoverLetter(skills, jobDescription)
+
   if (choices.length > 0) {
     return {
-      message: choices[0].text
+      message: generatedCoverLetter
     }
   } else {
     return {

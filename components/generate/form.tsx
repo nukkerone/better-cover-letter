@@ -8,7 +8,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, For
 import { Textarea } from "../ui/textarea"
 // @ts-ignore
 import { useFormState, useFormStatus } from "react-dom"
-import { generate } from "@/app/actions/form"
+import { generate } from "@/actions/form"
 import { useEffect } from "react"
 
 const formSchema = z.object({
@@ -46,18 +46,18 @@ const GenerationForm = ({ onGeneration, onError } : Props) => {
 
   return (
     <Form {...form}>
-      <form action={generateFormAction} className="space-y-8">
+      <form action={generateFormAction} className="space-y-8 flex flex-1 flex-col">
         <FormField
           control={form.control}
           name="freelancerProfile"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-1 flex-col">
               <FormLabel>Freelancer Profile</FormLabel>
               <FormControl>
-                <Textarea placeholder="" {...field} />
+                <Textarea placeholder="" {...field} className="flex-1" />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                Paste your original Cover Letter or your Freelancer profile, both will work.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -68,13 +68,13 @@ const GenerationForm = ({ onGeneration, onError } : Props) => {
           control={form.control}
           name="jobDescription"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-1 flex-col">
               <FormLabel>Job Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="" {...field} />
+                <Textarea placeholder="" {...field} className="flex-1" />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                This is the Job Application descriptions you want to apply to.
               </FormDescription>
               <FormMessage />
             </FormItem>
