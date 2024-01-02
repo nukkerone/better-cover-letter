@@ -4,6 +4,7 @@ import GenerationForm from "@/components/generate/form"
 import Response from "@/components/generate/response"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { useState } from "react"
+import { Separator } from "../ui/separator"
 
 export default function Generate() {
   const [generatedCoverLetter, setGeneratedCoverLetter] = useState<string>('')
@@ -12,7 +13,7 @@ export default function Generate() {
   return (
     <>
       <Card className="flex flex-1 flex-col">
-        <CardHeader>
+        <CardHeader className="border-b-[1px]">
           <CardTitle>Generate Your Smart Cover Letter</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-1 flex-col">

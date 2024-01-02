@@ -14,7 +14,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-row items-stretch justify-between p-24 max-w-[1280px] gap-[24px]">
+    <main className="flex min-h-screen flex-row items-stretch justify-between p-24 max-w-[1280px] gap-[24px] m-auto">
       <Generate />
     </main>
   )

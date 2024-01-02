@@ -10,6 +10,7 @@ import { Textarea } from "../ui/textarea"
 import { useFormState, useFormStatus } from "react-dom"
 import { generate } from "@/actions/form"
 import { useEffect } from "react"
+import { cn } from "@/lib/utils"
 
 const formSchema = z.object({
   freelancerProfile: z.string().min(1),
@@ -93,7 +94,7 @@ function SubmitButton() {
   const { pending } = useFormStatus()
 
   return (
-    <Button type="submit" aria-disabled={pending}>
+    <Button type="submit" aria-disabled={pending} className={cn({ 'cursor-not-allowed opacity-50': pending })} disabled={pending}>
       Generate
     </Button>
   )
