@@ -18,7 +18,7 @@ const formSchema = z.object({
 })
 
 type Props = {
-  onGeneration: (generatedCoverLetter: string) => void
+  onGeneration: (message: string, skills: string[]) => void
   onError: (error: string) => void
 }
 
@@ -39,7 +39,7 @@ const GenerationForm = ({ onGeneration, onError } : Props) => {
   useEffect(() => {
     if (state.message) {
       //form.reset()
-      onGeneration(state.message)
+      onGeneration(state.message, state.skills)
     } else {  // If no message, then surely there's an error
       onError(state.error ?? 'An error has happened')
     }

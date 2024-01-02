@@ -6,8 +6,13 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { useState } from "react"
 import { Separator } from "../ui/separator"
 
+type Generation = {
+  skills: string[],
+  coverLetter: string
+}
+
 export default function Generate() {
-  const [generatedCoverLetter, setGeneratedCoverLetter] = useState<string>('')
+  const [generatedCoverLetter, setGeneratedCoverLetter] = useState<Generation>({ skills: [], coverLetter: '' })
   const [error, setError] = useState<string>('')
 
   return (
@@ -17,11 +22,11 @@ export default function Generate() {
           <CardTitle>Generate Your Smart Cover Letter</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-1 flex-col">
-          <GenerationForm onGeneration={setGeneratedCoverLetter} onError={setError} />
+          <GenerationForm onGeneration={(coverLetter: string, skills: string[]) => setGeneratedCoverLetter({ coverLetter, skills })} onError={setError} />
         </CardContent>
       </Card>
 
-      <Response className="flex-1" response={generatedCoverLetter ?? error} />
+      <Response className="flex-1" response={generatedCoverLetter.coverLetter ?? error} skills={generatedCoverLetter.skills} />
     </>
   )
 }

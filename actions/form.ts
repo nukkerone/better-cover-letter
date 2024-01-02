@@ -7,6 +7,7 @@ import { fromZodError } from "zod-validation-error"
 
 type GenerateState = {
   message?: string | any
+  skills?: string[]
   error?: string
 }
 
@@ -27,12 +28,15 @@ export async function generate(prevState: any, formData: FormData): Promise<Gene
       error: userFriendlyError
     }
   }
-  const {jobDescription, freelancerProfile} = zodSafeParse.data; 
+  const { jobDescription, freelancerProfile } = zodSafeParse.data;
 
   const skills = await getFreelancerPresentSkills(freelancerProfile, jobDescription)
-  // console.log(skills)
+  
   const generatedCoverLetter = await betterCoverLetterFromFreelancerProfile(JSON.stringify(skills), freelancerProfile)
 
-  return { message: generatedCoverLetter }
+  return {
+    message: generatedCoverLetter,
+    skills: skills.freelancerSkillsThatMeetJobPosting
+  }
 
 }

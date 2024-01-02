@@ -39,8 +39,7 @@ export const getSkillList = async (freelancerProfile: string, jobDescription: st
 }
 
 export type PresentSkillListStruct = {
-  freelancerSkills: string[],
-  jobDescriptionSkills: string[]
+  freelancerSkillsThatMeetJobPosting: string[]
 }
 
 
