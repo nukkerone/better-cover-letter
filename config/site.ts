@@ -1,4 +1,4 @@
-import { SiteConfig, ContactConfig } from "@/types"
+import { SiteConfig, ContactConfig } from "@/lib/landing/types"
 
 /* ====================
 [> WEBSITE CONFIG <]

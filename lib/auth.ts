@@ -15,6 +15,7 @@ declare module 'next-auth' {
 
 
 export const authOptions: NextAuthOptions = {
+  // @ts-ignore
   adapter: DrizzleAdapter(db),
   session: {
     strategy: 'jwt',

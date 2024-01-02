@@ -24,7 +24,7 @@ const Checkout = ({ userId }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (paddle) {
+    if (paddle && userId) {
       paddle.Checkout.open({
         items: [{ priceId: process.env.NEXT_PUBLIC_PADDLE_PRODUCT_PRICE_ID! }],
         customData: {
@@ -32,7 +32,7 @@ const Checkout = ({ userId }: Props) => {
         }
       });
     }
-  }, [paddle])
+  }, [paddle, userId])
 
   return <></>
 }
