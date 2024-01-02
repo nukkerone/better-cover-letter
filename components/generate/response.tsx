@@ -10,7 +10,7 @@ type Props = {
 
 const Response = ({ className = '', response = '' }: Props) => {
 
-  return <Card className={cn(className)}>
+  return <Card className={cn(className, 'overflow-auto')}>
     <CardHeader>
       <CardTitle>Generated Cover Letter</CardTitle>
     </CardHeader>
