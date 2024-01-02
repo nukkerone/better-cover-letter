@@ -14,13 +14,13 @@ export const heroHeader: HeroHeader = {
 }
 
 export const featureCards: ContentSection = {
-  header: `Simplest Pricing`,
-  subheader: `So you don't have to worry about hidden fees`,
+  header: `Pricing`,
+  subheader: `It's free forever, just clone the project and bring your own OpenAI API key.`,
   content: [
     {
-      text: `$4.99`,
-      subtext: `20.000 word p/month`,
-      image: `/cover-letter-icon.png`,
+      text: `$0.00`,
+      subtext: `Beware of your own OpenAI API usage!`,
+      image: `/free.png`,
     },
   ],
 }
@@ -28,7 +28,7 @@ export const featureCards: ContentSection = {
 export const features: ContentSection = {
   header: `How it works`,
   subheader: `Why use Next Landing?`,
-  // image: `/features-img.webp`,
+  image: `/ostrich.png`,
   content: [
     {
       text: `Bring your own Cover Letter or Resume`,

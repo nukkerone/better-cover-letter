@@ -42,11 +42,12 @@ export default function Features() {
           ))}
         </div>
         {features.image && <div
-          className="md:border"
+          className=""
           style={{
             backgroundImage: `url(${features.image})`,
             backgroundRepeat: `no-repeat`,
-            backgroundSize: `cover`,
+            backgroundSize: `contain`,
+            backgroundPosition: `center 0`,
           }}
         ></div>}
       </div>
